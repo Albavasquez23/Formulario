@@ -23,35 +23,49 @@
    });
 
 
-
 //Cargamos Tabla
 var posteos = $("#posteos");
-var token = window.localStorage.getItem("token");
 
-if (token == null) {
- window.location = "login.html";
-}
-
+function mostrar(data){
 $.ajax({
  method: 'GET',
- url: "http://192.168.200.108:8080/post",
+    url: "http://localhost:8080/post",
  headers : {'Authorization': 'Bearer '+token},
  success : function(post){
   $.each(post, function(i,posts){
-   posteos.append('<div class="container"><table><td><h3>'+ posts.title +'</h3> <p>By: '+ posts.userId+'</p> '+ posts.body+'</td></table><hr style="color: #0056b2;"></div>');
+        posteos.append('<div class="container"><table><td><h3>'+ posts.title +'</h3> <p>By: '+ data[posts.userId-1].name +" ("+ data[posts.userId-1].email +')</p> '+ posts.body+'</td></table><hr style="color: #0056b2;"></div>');
   });
  }
+  });  
+}
 
+function usuarios(){
+  $.ajax({
+    method: 'GET',
+    url: "http://localhost:8080/users",
+    headers : {'Authorization': 'Bearer '+token},
+    success : function(data){
+      mostrar(data);
+    }
 });
+}
+  usuarios();
     
   });
-
-
-
 </script>
 
 </head>
 <body>
+   <body background ="http://www.powerpointhintergrund.com/uploads/2017/07/pixel-game-background-pictures-to-pin-on-pinterest-pinsdaddy--25.jpeg">
+
+
+        <!--Introducción-->
+
+        <div class="contenedor">
+            <center><p> 
+               <font color="#5975F4" size=6><n>Bienvenidos/as blog api</n></font><br> 
+                </div>
+        <a href="comentarios.html"> Plublicar post </a>
  <div class="container">
   <div class="row">
    <div class="col"><br>
@@ -68,7 +82,7 @@ $.ajax({
        
       </tbody>
       <colgroup>
-       <col style="background:blue">
+       <col style="background:rgb(207, 207, 216)">
        <col span="2" style="background:green">
       </colgroup>
      </table>

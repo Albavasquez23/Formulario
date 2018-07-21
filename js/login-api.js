@@ -1,7 +1,7 @@
 var LoginApi = (function(){
 
     //TODO: BASE_URL
-    var baseurl = "http://192.168.200.108:8080";       
+    var baseurl = "http://localhost:8080";       
     var PATH    = "/login"; 
     var PATH_REGISTER ="/register";
     var PATH_LOGOUT ="/logout";
