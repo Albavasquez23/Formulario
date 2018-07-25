@@ -6,14 +6,15 @@
 
  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
  <script type="text/javascript" src="js/login-api.js"></script>
+ <script type="text/javascript" src="js/post-api.js"></script>
  
 
  <script type="text/javascript">
 
+  var token = window.localStorage.getItem("token");
+
   $(document).ready(function(){
    $("#btnSalir").click(()=>{
-
-    var token = window.localStorage.getItem("token");
     LoginApi.logout(token)
     .then(function(data){
      window.localStorage.removeItem("token");
@@ -33,10 +34,24 @@ $.ajax({
  headers : {'Authorization': 'Bearer '+token},
  success : function(post){
   $.each(post, function(i,posts){
-        posteos.append('<div class="container"><table><td><h3>'+ posts.title +'</h3> <p>By: '+ data[posts.userId-1].name +" ("+ data[posts.userId-1].email +')</p> '+ posts.body+'</td></table><hr style="color: #0056b2;"></div>');
+        posteos.append('<div class="container"><table><td><h3 onclick="comentar(this);" id="'+posts.id+'">'+ posts.title +'</h3> <p>By: '+ data[posts.userId-1].name +" ("+ data[posts.userId-1].email +')</p> '+ posts.body+'</td></table><hr style="color: #0056b2;"></div>');
   });
  }
   });  
+}
+function cPost(){
+    var title = document.getElementById("postTitle").value;
+    var body = document.getElementById("postBody").value;
+
+    PostApi.CreatePost(title, body, token)
+    .then(function(){
+      location.reload();
+    })
+    .catch(error => console.log(error));
+}
+
+function comentar(data){
+  console.log(data);
 }
 
 function usuarios(){
@@ -50,6 +65,10 @@ function usuarios(){
 });
 }
   usuarios();
+
+  $("#crearPost").click(function(){
+    cPost();
+  });
     
   });
 </script>
@@ -65,7 +84,7 @@ function usuarios(){
             <center><p> 
                <font color="#5975F4" size=6><n>Bienvenidos/as blog api</n></font><br> 
                 </div>
-        <a href="comentarios.html"> Plublicar post </a>
+       
  <div class="container">
   <div class="row">
    <div class="col"><br>
@@ -87,9 +106,25 @@ function usuarios(){
       </colgroup>
      </table>
     </div>
+
+    <form>
+        <h5>Publicar post</h5>
+        <div>
+            <input type="text", id="postTitle" placeholder="Insertar el titulo"/>
+        </div><div>
+            <textarea type="text" id="postBody" placeholder="Insertar el Post"></textarea>
+        </div><div>
+            <button type="button" id="crearPost">Enviar</button>
+        </div>
+     </form>
+
+     
    </div>
   </div>
  </div>
+
+ 
+ 
 </body>
 </html>
  

@@ -5,6 +5,7 @@ var LoginApi = (function(){
     var PATH    = "/login"; 
     var PATH_REGISTER ="/register";
     var PATH_LOGOUT ="/logout";
+    var PATH_POST ="/post";
 
      return {
          login: function(email, password){
@@ -70,9 +71,29 @@ var LoginApi = (function(){
     });
 
 },
-listpost: function(token)
-{
-    
-}
+MostrarPost: function(token){
+    return new Promise(function(resolve, reject)
+    {
+        $.ajax({
+            method: "GET",
+            headers: {'Authorization': 'Bearer '+ token},
+            url: baseurl+PATH_POST,
+            success: function(data){
+                data.forEach(element => {
+                    $.tmlp("<div class='container'><table><td><a href:'comentar.html'><h3 onclick='comentar(this);' id='"+element.id+"'>"+ element.title +"</h3></a> <p>By: "+ element.id +" ("+  +")</p> "+ element.body+"</td></table><hr style='color: #0056b2;'></div>").appendTo("#posteos");
+                    
+                });
+        
+            },
+            error: function(error){
+                reject(error);
+
+            }
+                
+        })   
+});
+
+},
+
     }
 })();
